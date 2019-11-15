@@ -5,16 +5,22 @@ class Game extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      board: new Array(9).fill(' ')
+      board: new Array(9).fill(''),
+      player1: 'X',
     };
   }
 
+  handleClick = (e, cell, idx) => {
+    if(cell.length === 0) {
+      this.setState((state) => state.board[idx] = 'X')
+    }
+  };
+
   render() {
     const { board } = this.state;
-    console.log(board.length)
     return (
       <div>
-        <Board board={board}/>
+        <Board board={board} onClick={this.handleClick}/>
       </div>
     );
   }
