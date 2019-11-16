@@ -1,5 +1,6 @@
 html {
   display: flex;
+  width: 100%;
 }
 
 body {
@@ -20,11 +21,30 @@ h1 {
   justify-content: center;
   flex-flow: row wrap;
   list-style-type: none;
-  max-width: 600px;
+  max-width: 500px;
 }
 
-.container {
+#root {
+  width: 100%;
+}
+
+.game_container {
   display: flex;
+  justify-content: center;
+}
+
+.container .winner_alert {
+  text-align: center;
+  width: 100%;
+  padding: 1em;
+  background-color: hotpink;
+}
+
+.container .winner_alert button {
+  display: block;
+  margin: 1em auto;
+  padding: 1em 2em;
+  cursor: pointer;
 }
 
 .scoreboard {
@@ -37,9 +57,9 @@ h1 {
   display: flex;
   font-size: 4em;
   font-weight: bold;
-  height: 196px;
+  height: 160px;
   justify-content: center;
-  width: 196px;
+  width: 160px;
 }
 
 .board li:hover {

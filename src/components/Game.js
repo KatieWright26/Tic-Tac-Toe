@@ -23,24 +23,25 @@ class Game extends Component {
       winner: null,
       playerXScore: 0,
       playerOScore: 0,
-      winnerMessage: '',
+      winnerMessage: 'asdfadsfasdf',
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.state.winner === 'X') {
+    let state = this.state;
+    if(state.winner === 'X') {
       this.setState({
         playerXScore: this.state.playerXScore + 1,
         winnerMessage: 'PLAYER X WINS!!',
         winner: null
       });
-    } else if ( this.state.winner === 'O') {
+    } else if (state.winner === 'O') {
       this.setState({
         playerOScore: this.state.playerOScore + 1,
         winnerMessage: "PLAYER 0 WINS!!",
         winner: null
       });
-    } else if (!this.state.board.includes("")) {
+    } else if (!state.board.includes("") && state.winnerMessage.length === 0) {
       this.setState({
         winnerMessage: 'GAME TIED!!!'
       });
@@ -95,8 +96,10 @@ class Game extends Component {
           winner={winnerMessage}
           handleReset={this.handleResetClick}/>
         }
-        <Scoreboard xWins={playerXScore} yWins={playerOScore} />
-        <Board board={board} onClick={this.handleClick} />
+        <div className="game_container">
+          <Scoreboard xWins={playerXScore} yWins={playerOScore} />
+          <Board board={board} onClick={this.handleClick} />
+        </div>
       </div>
     );
   }
