@@ -10,12 +10,25 @@ body {
   width: 100%;
 }
 
-.board {
+h1 {
+  text-align: center;
+}
+
+.board ul {
   display: flex;
+  flex: 2 1 auto;
   justify-content: center;
   flex-flow: row wrap;
   list-style-type: none;
-  width: 600px;
+  max-width: 600px;
+}
+
+.container {
+  display: flex;
+}
+
+.scoreboard {
+  flex: 0 1 auto;
 }
 
 .board li {
