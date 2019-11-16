@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board';
 import Scoreboard from './Scoreboard';
+import WinnerAlert from './WinnerAlert';
 
 const POSSIBLE_WINS = [
   [0, 1, 2],
@@ -30,19 +31,18 @@ class Game extends Component {
     if(this.state.winner === 'X') {
       this.setState({
         playerXScore: this.state.playerXScore + 1,
-        winner: null,
-        board: new Array(9).fill("")
+        winnerMessage: 'PLAYER X WINS!!',
+        winner: null
       });
     } else if ( this.state.winner === 'O') {
       this.setState({
         playerOScore: this.state.playerOScore + 1,
-        winner: null,
-        board: new Array(9).fill("")
+        winnerMessage: "PLAYER 0 WINS!!",
+        winner: null
       });
     } else if (!this.state.board.includes("")) {
       this.setState({
-        winner: null,
-        board: new Array(9).fill("")
+        winnerMessage: 'GAME TIED!!!'
       });
     }
   };
@@ -56,6 +56,15 @@ class Game extends Component {
       return winner;
     });
     return winner;
+  }
+
+  handleResetClick = () => {
+    this.setState({
+      winner: null,
+      winnerMessage: '',
+      currentPlayer: true,
+      board: new Array(9).fill('')
+    })
   }
 
   handleClick = (cell, idx) => {
@@ -78,9 +87,14 @@ class Game extends Component {
   };
 
   render() {
-    const { board, playerXScore, playerOScore } = this.state;
+    const { board, playerXScore, playerOScore, winnerMessage } = this.state;
     return (
       <div className="container">
+        {winnerMessage &&
+          <WinnerAlert
+          winner={winnerMessage}
+          handleReset={this.handleResetClick}/>
+        }
         <Scoreboard xWins={playerXScore} yWins={playerOScore} />
         <Board board={board} onClick={this.handleClick} />
       </div>
