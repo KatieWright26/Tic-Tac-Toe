@@ -23,25 +23,25 @@ class Game extends Component {
       winner: null,
       playerXScore: 0,
       playerOScore: 0,
-      winnerMessage: 'asdfadsfasdf',
+      winnerMessage: '',
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let state = this.state;
-    if(state.winner === 'X') {
+    const { winner, playerOScore, playerXScore, board, winnerMessage } = this.state;
+    if(winner === 'X') {
       this.setState({
-        playerXScore: this.state.playerXScore + 1,
+        playerXScore: playerXScore + 1,
         winnerMessage: 'PLAYER X WINS!!',
         winner: null
       });
-    } else if (state.winner === 'O') {
+    } else if (winner === 'O') {
       this.setState({
-        playerOScore: this.state.playerOScore + 1,
+        playerOScore: playerOScore + 1,
         winnerMessage: "PLAYER 0 WINS!!",
         winner: null
       });
-    } else if (!state.board.includes("") && state.winnerMessage.length === 0) {
+    } else if (!board.includes("") && winnerMessage.length === 0) {
       this.setState({
         winnerMessage: 'GAME TIED!!!'
       });
