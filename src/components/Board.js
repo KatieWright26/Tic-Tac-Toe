@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 
 class Board extends Component {
-  assignCellValue = (e, cell, idx) => {
-    this.props.onClick(e, cell, idx)
+  assignCellValue = (cell, idx) => {
+    this.props.onClick(cell, idx)
   };
 
   render() {
-    const { board, onClick } = this.props
+    const { board } = this.props
     return (
-      <div>
-        <ul className="board">
+      <div className="board">
+        <ul>
           {board.map((cell, idx) => {
-          return <li key={idx} onClick={e => this.assignCellValue(e, cell, idx)}>{cell}</li>})}
+            return (
+              <li key={idx} onClick={() => this.assignCellValue(cell, idx)}>
+                {cell}
+              </li>
+            );
+          })}
         </ul>
       </div>
     );
