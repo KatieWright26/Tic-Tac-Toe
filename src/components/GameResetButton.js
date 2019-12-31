@@ -1,8 +1,5 @@
 import React from 'react';
 
-const GameResetButton = props => {
-  return <button onClick={props.handleResetClick}
-  >Reset Game!</button>
-}
-
-export default GameResetButton;
+export const GameResetButton = ({ handleResetClick }) => (
+  <button onClick={handleResetClick}>Reset Game!</button>
+);

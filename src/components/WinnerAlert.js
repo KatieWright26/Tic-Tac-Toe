@@ -1,14 +1,11 @@
 import React from 'react';
-import GameResetButton from './GameResetButton';
+import { GameResetButton } from './GameResetButton';
 
-const WinnerAlert = props => {
-
+export const WinnerAlert = ({ winner, handleResetClick }) => {
   return (
     <div className="winner_alert">
-      {props.winner}
-      <GameResetButton handleResetClick={props.handleReset}/>
+      {winner}
+      <GameResetButton handleResetClick={handleResetClick} />
     </div>
-  )
+  );
 }
-
-export default WinnerAlert;

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import Board from './Board';
-import Scoreboard from './Scoreboard';
-import WinnerAlert from './WinnerAlert';
+import React, { useState, useEffect } from 'react';
+import { Board } from './Board';
+import { Scoreboard } from './Scoreboard';
+import { WinnerAlert } from './WinnerAlert';
 
 const POSSIBLE_WINS = [
   [0, 1, 2],
@@ -14,95 +14,66 @@ const POSSIBLE_WINS = [
   [2, 4, 6]
 ];
 
-class Game extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      board: new Array(9).fill(''),
-      currentPlayer: true,
-      winner: null,
-      playerXScore: 0,
-      playerOScore: 0,
-      winnerMessage: '',
-    };
-  }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { winner, playerOScore, playerXScore, board, winnerMessage } = this.state;
-    if(winner === 'X') {
-      this.setState({
-        playerXScore: playerXScore + 1,
-        winnerMessage: 'PLAYER X WINS!!',
-        winner: null
-      });
-    } else if (winner === 'O') {
-      this.setState({
-        playerOScore: playerOScore + 1,
-        winnerMessage: "PLAYER 0 WINS!!",
-        winner: null
-      });
-    } else if (!board.includes("") && winnerMessage.length === 0) {
-      this.setState({
-        winnerMessage: 'GAME TIED!!!'
-      });
-    }
-  };
+function Game() {
+  const [board, setBoard] = useState(new Array(9).fill(''));
+  const [winner, setWinner] = useState('');
+  const [playerOScore, setPlayerOScore] = useState(0);
+  const [playerXScore, setPlayerXScore] = useState(0);
+  const [winnerMessage, setWinnerMessage] = useState('');
+  const [currentPlayer, setCurrentPlayer] = useState(true);
 
-  checkForWin = () => {
-    let board = this.state.board;
-    let winner = null;
+  // DETECT WINNER
+  useEffect(() => {
     POSSIBLE_WINS.filter(w => {
-      if (w.every(idx => board[idx] === 'X')) { winner = 'X' }
-      if (w.every(idx => board[idx] === 'O')) { winner = 'O' }
-      return winner;
+      if (w.every(idx => board[idx] === "X")) {
+        setWinner("X");
+        setPlayerXScore(prevState => prevState + 1);
+      }
+      if (w.every(idx => board[idx] === "O")) {
+        setWinner("O");
+        setPlayerOScore(prevState => prevState + 1);
+      }
+      return board;
     });
-    return winner;
+  }, [board]);
+
+  // SET WINNING MESSAGE
+  useEffect(() => {
+    if (winner.length > 0) setWinnerMessage(`"PLAYER ${winner} WINS!!"`);
+  }, [winner])
+
+  const handleResetClick = () => {
+    setWinner('');
+    setWinnerMessage('');
+    setCurrentPlayer(!currentPlayer);
+    setBoard(new Array(9).fill(''));
   }
 
-  handleResetClick = () => {
-    this.setState({
-      winner: null,
-      winnerMessage: '',
-      currentPlayer: true,
-      board: new Array(9).fill('')
-    })
-  }
-
-  handleClick = (cell, idx) => {
-    if(cell.length === 0) {
-      this.setState((state) => {
-        let winner = this.checkForWin();
-        let board = this.state.board.map((cell, i) => {
-          if(i === idx) {
-            cell = this.state.currentPlayer ? "X" : "O";
-          }
-          return cell;
-        });
-        return {
-          board,
-          winner,
-          currentPlayer: !this.state.currentPlayer,
-        }
-      });
+  const handleClick = (idx) => {
+    if (board[idx] === '') {
+      board[idx] = currentPlayer ? "X" : "O"
+      setBoard([
+        ...board,
+      ]);
+      setCurrentPlayer(!currentPlayer);
     }
   };
 
-  render() {
-    const { board, playerXScore, playerOScore, winnerMessage } = this.state;
-    return (
-      <div className="container">
-        {winnerMessage &&
-          <WinnerAlert
+  return (
+    <div className="container">
+      {winner && (
+        <WinnerAlert
           winner={winnerMessage}
-          handleReset={this.handleResetClick}/>
-        }
-        <div className="game_container">
-          <Scoreboard xWins={playerXScore} yWins={playerOScore} />
-          <Board board={board} onClick={this.handleClick} />
-        </div>
+          handleResetClick={handleResetClick}
+        />
+      )}
+      <div className="game_container">
+        <Scoreboard xWins={playerXScore} yWins={playerOScore} />
+        <Board board={board} handleClick={handleClick} />
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default Game;
