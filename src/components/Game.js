@@ -38,9 +38,15 @@ function Game() {
     });
   }, [board]);
 
+  const boardIsFull = board.every(cell => cell.length === 1);
+
+  useEffect(() => {
+    if (boardIsFull) setWinnerMessage(`TIE!!`);
+  }, [boardIsFull]);
+
   // SET WINNING MESSAGE
   useEffect(() => {
-    if (winner.length > 0) setWinnerMessage(`"PLAYER ${winner} WINS!!"`);
+    if (winner.length > 0) setWinnerMessage(`PLAYER ${winner} WINS!!`);
   }, [winner])
 
   const handleResetClick = () => {
@@ -62,7 +68,7 @@ function Game() {
 
   return (
     <div className="container">
-      {winner && (
+      {winnerMessage && (
         <WinnerAlert
           winner={winnerMessage}
           handleResetClick={handleResetClick}
