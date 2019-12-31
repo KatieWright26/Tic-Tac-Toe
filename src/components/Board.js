@@ -1,26 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Board extends Component {
-  assignCellValue = (cell, idx) => {
-    this.props.onClick(cell, idx)
-  };
-
-  render() {
-    const { board } = this.props
-    return (
-      <div className="board">
-        <ul>
-          {board.map((cell, idx) => {
-            return (
-              <li key={idx} onClick={() => this.assignCellValue(cell, idx)}>
-                {cell}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    );
-  }
+export const Board = ({ board, handleClick })  => {
+  return (
+    <div className="board">
+      <ul>
+        {board.map((cell, idx) => (
+          <li key={idx} onClick={() => handleClick(idx)}>
+            {cell}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
-
-export default Board;
